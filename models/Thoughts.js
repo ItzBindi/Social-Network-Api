@@ -45,13 +45,16 @@ username: {
   required: true,
 },
 reactions: [reactionSchema]
-});
+},
+{
+  toJSON: {
+    getters: true
+  }
+}
+);
 
 thoughtSchema.virtual('reactionCount').get(function(){
-  return `${this.reactions}`;
-}).set(function(value) {
-  const reactionThings = value.split(' ');
-  this.reactions = reactionThings;
+  return this.reactions;
 });
 
 const Thoughts = model('thought', thoughtSchema);
