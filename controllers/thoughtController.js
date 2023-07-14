@@ -33,7 +33,7 @@ module.exports = {
 
     async getThoughtById(req, res) {
         try {
-            const thoughts = await Thoughts.findOne({ id: req.params.courseId })
+            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtId })
                 .select('-__v');
 
             if (!thoughts) {
@@ -48,7 +48,7 @@ module.exports = {
 
     async updateThought(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndUpdate({ id: req.params.courseId }, { $set: req.body }, { new: true, runValidators: true });
+            const thoughts = await Thoughts.findOneAndUpdate({ _id: req.params.thoughtId }, { $set: req.body }, { new: true, runValidators: true });
             res.status(200).json(thoughts)
         } catch (err) {
             res.status(500).json(err);
@@ -57,7 +57,7 @@ module.exports = {
 
     async deleteThought(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndDelete({ id: req.params.courseId });
+            const thoughts = await Thoughts.findOneAndDelete({ _id: req.params.thoughtId });
             res.json(thoughts);
         } catch (err) {
             res.status(500).json(err);
@@ -66,7 +66,7 @@ module.exports = {
 
     async addReaction(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndUpdate({ id: req.params.courseId }, { $addToSet: { reactions : req.body } }, { new: true });
+            const thoughts = await Thoughts.findOneAndUpdate({ _id: req.params.thoughtId }, { $addToSet: { reactions : req.body } }, { new: true });
             res.status(200).json(thoughts);
         }
         catch (err) {
@@ -76,7 +76,7 @@ module.exports = {
 
     async deleteReaction(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndUpdate({ id: req.params.courseId }, { $pull: { friends: req.params.friendId } }, { new: true });
+            const thoughts = await Thoughts.findOneAndUpdate({ _id: req.params.thoughtId }, { $pull: { friends: req.params.friendId } }, { new: true });
             res.status(200).json(thoughts);
         }
         catch (err) {

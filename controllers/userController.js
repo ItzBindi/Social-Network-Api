@@ -22,7 +22,7 @@ module.exports = {
     
     async getUserById(req, res) {
         try {
-          const users = await User.findOne({ id: req.params.courseId })
+          const users = await User.findOne({ _id: req.params.userId })
             .select('-__v');
     
           if (!users) {
@@ -37,7 +37,7 @@ module.exports = {
 
       async updateUser(req, res){
         try {
-          const users = await User.findOneAndUpdate({id: req.params.courseId}, {$set: req.body}, { new: true, runValidators: true });
+          const users = await User.findOneAndUpdate({_id: req.params.userId}, {$set: req.body}, { new: true, runValidators: true });
           res.status(200).json(users)
         } catch (err) {
           res.status(500).json(err);
@@ -46,7 +46,7 @@ module.exports = {
 
     async deleteUser(req, res) {
       try {
-        const users = await User.findOneAndDelete({ id: req.params.courseId });
+        const users = await User.findOneAndDelete({ _id: req.params.userId });
         res.json(users);
       } catch (err) {
         res.status(500).json(err);
@@ -54,7 +54,7 @@ module.exports = {
   },
     async addFriend(req, res) {
       try {
-        const users = await User.findOneAndUpdate({ id: req.params.courseId }, { $addToSet: { friends: req.params.friendId } }, { new: true });
+        const users = await User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.params.friendId } }, { new: true });
         res.status(200).json(users);
       }
       catch (err) {
@@ -63,7 +63,7 @@ module.exports = {
     },
     async deleteFriend(req, res) {
       try {
-        const users = await User.findOneAndUpdate({ id: req.params.courseId }, { $pull: { friends: req.params.friendId } }, { new: true });
+        const users = await User.findOneAndUpdate({ _id: req.params.userId }, { $pull: { friends: req.params.friendId } }, { new: true });
         res.status(200).json(users);
       }
       catch (err) {
